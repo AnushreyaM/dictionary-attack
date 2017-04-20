@@ -1,6 +1,10 @@
 # Dictionary Attack
 This repository contains a simple example of a dictionary attack coded in Java.
 
+Run the parallelised versin of this code by executing the following commands :
+javac DictionaryAttack4.java
+java DictionaryAttack
+
 ## Description of Repository Content
 
 Here are the files you can find in this repository:
