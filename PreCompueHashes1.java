@@ -5,12 +5,16 @@ import java.lang.StringBuilder;
 import javax.xml.bind.DatatypeConverter;
 
 class PreComputeHashes1 {
-
-
-    	public static Map<String, String> hashes_dict = new HashMap<String, String>();
-		public static Map<String, String> non_salted_passwords = new HashMap<String, String>();
+	
+	// hashes_dict contains all the hashed values of words from the dictionary
+	public static Map<String, String> hashes_dict = new HashMap<String, String>();
+	//all non-salted 
+	public static Map<String, String> non_salted_passwords = new HashMap<String, String>();
+	//all salted passwords from password.txt
     	public static Map<String, String> salted_passwords = new HashMap<String, String>();
+	//stores only salts
     	public static Map<String, String> salted_passwords_salts = new HashMap<String, String>();
+	// salted_hashes_dict contains all the salted hashed values of words from the dictionary,salts taken from the password list
     	public static Map<String, String> salted_hashes_dict = new HashMap<String, String>();
     			
 		
@@ -42,7 +46,7 @@ class PreComputeHashes1 {
 				return sha1;
 			}
 			
-					//This method takes a byte array holding a salt and a string input
+		//This method takes a byte array holding a salt and a string input
 			//and returns the concatenated salt || input in byte array format
 			public static byte[] concatenate_salt_with_string(byte[] salt, String input) throws Exception {
 				//Convert input string to bytes
@@ -102,42 +106,45 @@ class PreComputeHashes1 {
 					salted_passwords_salts.put(splited[0], splited[2]);
 				}
 			}
-			
+			 
 			populate() ;
 		
 	}
 	
+	// we populate the hashes_dict and salted_hashes_dict
 	public static void populate() throws Exception{
 	
 	
 	//Load the provided Dictionary into stream and buffer
         File fin = new File("english.0");
-		FileInputStream fis = new FileInputStream(fin);
-		Iterator non_salted_passwords_it = non_salted_passwords.entrySet().iterator();
+	FileInputStream fis = new FileInputStream(fin);
+	Iterator non_salted_passwords_it = non_salted_passwords.entrySet().iterator();
     	
     	//Construct BufferedReader from InputStreamReader
     	BufferedReader br = new BufferedReader(new InputStreamReader(fis));
      
-    	//We parse the buffer to test matches for hashed password,
-    	//reversed passwords, non vowel passwords, and salted versions of password (if required). 
+    	//We parse the buffer to populate the hashmaps which store the final hashed value of every word
     	String line = null;
     	while ((line = br.readLine()) != null) {
     		
-        		String reversed_line = new StringBuilder(line).reverse().toString();
-        		String line_without_vowels = line.replaceAll("[AEIOUaeiou]", "");
-				Iterator salted_passwords_salts_it = salted_passwords_salts.entrySet().iterator();
-    			while (salted_passwords_salts_it.hasNext()) {
-    				Map.Entry pair = (Map.Entry)salted_passwords_salts_it.next();
-        			//System.out.println(pair.getValue());
-        			byte[] account_password_hash_salt = DatatypeConverter.parseHexBinary(pair.getValue().toString());
+        	String reversed_line = new StringBuilder(line).reverse().toString();
+        	String line_without_vowels = line.replaceAll("[AEIOUaeiou]", "");
+		
+		Iterator salted_passwords_salts_it = salted_passwords_salts.entrySet().iterator();
+		
+		//to populate salted hashes of every word in the dictionary , line reversed and without vowels
+    		while (salted_passwords_salts_it.hasNext()) {
+    			Map.Entry pair = (Map.Entry)salted_passwords_salts_it.next();
+        		byte[] account_password_hash_salt = DatatypeConverter.parseHexBinary(pair.getValue().toString());
         			
-        			salted_hashes_dict.put(stringToSha1_salted(account_password_hash_salt,line),line);
+        		salted_hashes_dict.put(stringToSha1_salted(account_password_hash_salt,line),line);
         			
     	        	salted_hashes_dict.put(stringToSha1_salted(account_password_hash_salt,reversed_line),reversed_line);
     	        	
     	        	salted_hashes_dict.put(stringToSha1_salted(account_password_hash_salt,line_without_vowels),line_without_vowels);
-    			}
+    		}
     	        
+		//to populate unsalted hashes , line reversed and without vowels
     	        hashes_dict.put(stringToSha1(line),line);
     	        //salted_hashes_dict.put(stringToSha1_salted(account_password_hash_salt,line),line);
     	        
@@ -153,16 +160,10 @@ class PreComputeHashes1 {
     	        
     	        
     	        
-    	        
-    	        
-    		}
-    		//System.out.println(hashes_dict) ;
-    		//System.out.println(salted_hashes_dict);
+    	  }
     		
-		//salted_and_unsalted() ;
 	
-	
-	}
+}
 
 	public static void main(String[] args) throws Exception{
 	
