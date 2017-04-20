@@ -54,27 +54,9 @@ To run the attack, simply compile and run the `DictionaryAttack.java` file.
 All paths are hardcoded in the file so you will need to update them before 
 you compile the source code. 
 
-The output should be the following:
-```
-Let's get things started.
-joe's password is 'December'
-alice's password is 'tfosorciM'
-mary's password is 'Monday'
-john's password is 'brosba'
-bob's password is 'yllacitebahpla'
-guy's password is 'ntrstwrthnss'
-nick's password is 'uplifting'
-adam's password is 'vsblts'
-eve's password is 'wrrsm'
-andrew's password is 'kcitsdray'
-The program terminated.
-```
+The output should be what is specified in the out.txt file , Time taken may differ.
 
 ## Note on complexity
 
-Note that this attack is a simple example and could be made far more efficient
-using various strategies. One of them would be to precompute the possible 
-hashes before checking the password list for matches. Since our password list
-and dictionary are fairly small in this example, I did not implement this 
-feature.  
+This attack has been parallelised and words of dictionary have been hashed for better efficiency.  
 
